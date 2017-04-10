@@ -9,7 +9,7 @@ class LayerCollector {
 
   static getInstance(buildScheme, type, injections, tailArgs) {
     if (!injections) {
-      injections = injections || tailArgs;
+      injections = tailArgs;
       tailArgs = null;
     }
 
