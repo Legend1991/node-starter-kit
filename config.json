@@ -1,0 +1,48 @@
+{
+  "db": {
+    "uri": "sqlite://spambot.sqlite",
+    "options": {
+      "dialect": "sqlite",
+      "define": {
+        "timestamps": false
+      },
+      "storage": "./storage/spambot.sqlite"
+    }
+  },
+  "port": 3000,
+  "serverBuildScheme": {
+    "type":         "Server",
+    "injections":   ["CallboardRouter", "UserRouter"],
+    "compositions": {
+      "CallboardRouter": {
+        "type":       "CommonRouter",
+        "injections": ["CallboardFacade"]
+      },
+      "UserRouter":      {
+        "type":       "CommonRouter",
+        "injections": ["UserFacade"]
+      },
+      "CommonRouter":    {
+        "type":       "Router",
+        "injections": [
+          {
+            "type":       "Validator",
+            "injections": [
+              {
+                "type": "AuthChecker"
+              }
+            ]
+          }
+        ]
+      }
+    },
+    "types":        {
+      "Server":          "./remote-access-layer/server.js",
+      "Router":          "./remote-access-layer/backend/router.js",
+      "Validator":       "./validation-layer/validator.js",
+      "AuthChecker":     "./protection-layer/auth-checker.js",
+      "CallboardFacade": "./business-logic-layer/callboard-facade.js",
+      "UserFacade":      "./business-logic-layer/user-facade.js"
+    }
+  }
+}
