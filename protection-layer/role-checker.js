@@ -7,7 +7,12 @@ class RoleChecker extends CallInterceptor {
     super(source);
   }
 
-  before(methodName) {
+  before(methodName, userId) {
+    let userRole = this.getUserRole(userId);
+    let sourceType = this.getSourceType();
+  }
+
+  getUserRole(id) {
 
   }
 }
