@@ -17,11 +17,23 @@ class RoleChecker extends CallInterceptor {
       throw new Error('Forbidden');
     }
 
+    if (this.checkPermission(this.permissionsScheme.unauthorized, sourceType, methodName)) {
+      return;
+    }
+
     throw new Error('Unauthorized');
   }
 
   getUserRole(id) {
 
+  }
+
+  checkPermission(permissions, sourceType, methodName) {
+    if (Array.isArray(permissions[sourceType]) && ~permissions[sourceType].indexOf(methodName)) {
+      return true;
+    }
+
+    return false;
   }
 }
 
