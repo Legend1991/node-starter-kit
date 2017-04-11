@@ -18,6 +18,10 @@ class RoleChecker extends CallInterceptor {
 
       let userRole = this.getUserRole(userId);
 
+      if (this.checkRole(this.permissionsScheme.authorized.roles, userRole, sourceType, methodName)) {
+        return;
+      }
+
       throw new Error('Forbidden');
     }
 
@@ -35,6 +39,14 @@ class RoleChecker extends CallInterceptor {
   checkPermission(permissions, sourceType, methodName) {
     if (Array.isArray(permissions[sourceType]) && ~permissions[sourceType].indexOf(methodName)) {
       return true;
+    }
+
+    return false;
+  }
+
+  checkRole(roles, userRole, sourceType, methodName) {
+    if (roles[userRole] && roles[userRole].permissions) {
+      return this.checkPermission(roles[userRole].permissions, sourceType, methodName);
     }
 
     return false;
