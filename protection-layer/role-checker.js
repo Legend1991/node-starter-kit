@@ -12,12 +12,16 @@ class RoleChecker extends CallInterceptor {
     let sourceType = this.getSourceType();
 
     if (userId) {
+      if (this.checkPermission(this.permissionsScheme.authorized.permissions, sourceType, methodName)) {
+        return;
+      }
+
       let userRole = this.getUserRole(userId);
 
       throw new Error('Forbidden');
     }
 
-    if (this.checkPermission(this.permissionsScheme.unauthorized, sourceType, methodName)) {
+    if (this.checkPermission(this.permissionsScheme.unauthorized.permissions, sourceType, methodName)) {
       return;
     }
 
