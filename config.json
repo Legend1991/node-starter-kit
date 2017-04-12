@@ -12,7 +12,7 @@
   "port": 3000,
   "serverBuildScheme": {
     "type":         "Server",
-    "injections":   ["CallboardRouter", "UserRouter"],
+    "injections":   ["serverConfig", "CallboardRouter", "UserRouter"],
     "compositions": {
       "CallboardRouter": {
         "type":       "CommonRouter",
@@ -43,6 +43,9 @@
       "AuthChecker":     "./protection-layer/auth-checker.js",
       "CallboardFacade": "./business-logic-layer/callboard-facade.js",
       "UserFacade":      "./business-logic-layer/user-facade.js"
+    },
+    "configs": {
+      "serverConfig": "./remote-access-layer/config.json"
     }
   }
 }
