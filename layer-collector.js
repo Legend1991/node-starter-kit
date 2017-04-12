@@ -24,6 +24,8 @@ class LayerCollector {
       } else if (buildScheme.compositions[type]) {
         return LayerCollector.getInstance(buildScheme,
           buildScheme.compositions[type].type, buildScheme.compositions[type].injections, injections);
+      } else if (buildScheme.configs[type]) {
+        return require(path.resolve(buildScheme.configs[type]));
       }
     } else if (typeof type === 'object') {
       return LayerCollector.getInstance(buildScheme, type.type, type.injections, injections);
