@@ -1,6 +1,8 @@
 'use strict';
 
 const CallInterceptor = require('../call-interceptor');
+const ForbiddenError = require('../errors/forbidden-error');
+const UnauthorizedError = require('../errors/unauthorized-error');
 
 class RoleChecker extends CallInterceptor {
   constructor(source, permissionsScheme) {
@@ -22,14 +24,14 @@ class RoleChecker extends CallInterceptor {
         return;
       }
 
-      throw new Error('Forbidden');
+      throw new ForbiddenError('Access denied for users with role: "' + userRole + '"');
     }
 
     if (this.checkPermission(this.permissionsScheme.unauthorized.permissions, sourceType, methodName)) {
       return;
     }
 
-    throw new Error('Unauthorized');
+    throw new UnauthorizedError('Access denied for unauthorized users');
   }
 
   getUserRole(id) {
