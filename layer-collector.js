@@ -31,7 +31,7 @@ class LayerCollector {
       return LayerCollector.getInstance(buildScheme, type.type, type.injections, injections);
     }
 
-    throw new Error('Unknown type: ' + type);
+    throw new TypeError('Unknown type: "' + type + '"');
   }
 
   static getArguments(buildScheme, args, tailArgs) {
