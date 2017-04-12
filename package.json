@@ -21,6 +21,7 @@
     "compression": "^1.6.0",
     "consolidate": "^0.14.5",
     "css-loader": "^0.26.1",
+    "es6-error": "^4.0.2",
     "express": "^4.14.0",
     "file-loader": "^0.9.0",
     "glob": "^7.1.1",
