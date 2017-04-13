@@ -9,14 +9,13 @@ class CallInterceptor {
       get: function(target, property, receiver) {
         if (typeof target[property] === 'function') {
           return function(...args) {
-            self.before.apply(self, [property].concat(args));
+            let newArgs = self.before.apply(self, [property].concat(args));
+            args = Array.isArray(newArgs) && newArgs || args;
 
             typeof self[property] === 'function' && self[property].apply(self, args);
-            let result = target[property].apply(target, args);
+            let targetResult = target[property].apply(target, args);
 
-            self.after.apply(self, [property].concat(args));
-
-            return result;
+            return self.after.apply(self, [property, targetResult].concat(args)) && targetResult;
           }
         }
 
@@ -25,11 +24,11 @@ class CallInterceptor {
     });
   }
 
-  before(methodName) {
+  before(methodName, ...args) {
 
   }
 
-  after(methodName) {
+  after(methodName, targetResult, ...args) {
 
   }
 
