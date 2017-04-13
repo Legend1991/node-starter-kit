@@ -9,8 +9,12 @@ class RequestHandler extends CallInterceptor {
     super(source);
   }
 
-  before(methodName) {
+  async before(methodName, req, res, next) {
 
+  }
+
+  async after(methodName, targetResult, req, res, next, ...args) {
+    return res.json(targetResult);
   }
 }
 

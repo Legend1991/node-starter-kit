@@ -1,6 +1,6 @@
 {
   "name": "node-starter-kit",
-  "description": "Starter kit for Node.js application",
+  "description": "Starter kit for developing Node.js applications",
   "version": "0.7.0",
   "private": false,
   "author": "Igor Goremykin",
