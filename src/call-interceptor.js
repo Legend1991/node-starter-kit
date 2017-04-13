@@ -6,16 +6,16 @@ class CallInterceptor {
     this.source = source;
 
     return new Proxy(source, {
-      get: function(target, property, receiver) {
+      get: async (target, property, receiver) => {
         if (typeof target[property] === 'function') {
-          return function(...args) {
-            let newArgs = self.before.apply(self, [property].concat(args));
+          return async (...args) => {
+            let newArgs = await self.before.apply(self, [property].concat(args));
             args = Array.isArray(newArgs) && newArgs || args;
 
-            typeof self[property] === 'function' && self[property].apply(self, args);
-            let targetResult = target[property].apply(target, args);
+            typeof self[property] === 'function' && await async () => self[property].apply(self, args);
+            let targetResult = await async () => target[property].apply(target, args);
 
-            return self.after.apply(self, [property, targetResult].concat(args)) && targetResult;
+            return (await self.after.apply(self, [property, targetResult].concat(args))) && targetResult;
           }
         }
 
@@ -24,11 +24,11 @@ class CallInterceptor {
     });
   }
 
-  before(methodName, ...args) {
+  async before(methodName, ...args) {
 
   }
 
-  after(methodName, targetResult, ...args) {
+  async after(methodName, targetResult, ...args) {
 
   }
 
@@ -37,7 +37,7 @@ class CallInterceptor {
   }
 
   getSourceType() {
-    if (typeof this.source.__proto__['getSourceType'] === 'function') {
+    if (typeof this.source['getSourceType'] === 'function') {
       return this.source.getSourceType();
     }
 
