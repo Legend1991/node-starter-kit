@@ -24,7 +24,7 @@ class InputDataChecker extends CallInterceptor {
         const schema = joiBuilder.build(argsValidationScheme[key]);
         const result = Joi.validate(args[index], schema);
 
-        if (!result.error) {
+        if (result.error) {
           throw new TypeError(result.error.message);
         }
     });
