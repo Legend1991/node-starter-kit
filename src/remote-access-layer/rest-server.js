@@ -2,7 +2,7 @@
 
 const {Router} = require('express');
 
-const CallInterceptor = require('../call-interceptor');
+const RequestHandler = require('./request-handler');
 const ForbiddenError = require('../errors/forbidden-error');
 const UnauthorizedError = require('../errors/unauthorized-error');
 
@@ -15,16 +15,17 @@ class RestServer {
     let apiRouter = Router();
 
       sources.forEach((source) => {
-        let sourceType = new CallInterceptor(source).getSourceType();
+        let requestHandler = new RequestHandler(source);
+        let sourceType = requestHandler.getSourceType();
         let sourceApiScheme = apiScheme[sourceType];
 
         if (sourceApiScheme) {
           for (let methodName of Object.keys(sourceApiScheme)) {
-            if (typeof source[methodName] === 'function') {
+            if (typeof requestHandler[methodName] === 'function') {
                 let sourceRouter = Router();
                 let methodScheme = sourceApiScheme[methodName];
 
-                sourceRouter[methodScheme.method](methodScheme.path, source[methodName]);
+                sourceRouter[methodScheme.method](methodScheme.path, requestHandler[methodName]);
 
                 apiRouter.use('/api', sourceRouter);
             }
