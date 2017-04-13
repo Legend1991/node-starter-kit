@@ -10,12 +10,13 @@ class CallInterceptor {
         if (typeof target[property] === 'function') {
           return async (...args) => {
             let newArgs = await self.before.apply(self, [property].concat(args));
+            let afterArgs = Array.isArray(newArgs) && args.concat[newArgs] || args;
             args = Array.isArray(newArgs) && newArgs || args;
 
             typeof self[property] === 'function' && await async () => self[property].apply(self, args);
             let targetResult = await async () => target[property].apply(target, args);
 
-            return (await self.after.apply(self, [property, targetResult].concat(args))) && targetResult;
+            return (await self.after.apply(self, [property, targetResult].concat(afterArgs))) && targetResult;
           }
         }
 
