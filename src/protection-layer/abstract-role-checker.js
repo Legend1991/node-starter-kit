@@ -4,7 +4,7 @@ const CallInterceptor = require('../call-interceptor');
 const ForbiddenError = require('../errors/forbidden-error');
 const UnauthorizedError = require('../errors/unauthorized-error');
 
-class RoleChecker extends CallInterceptor {
+class AbstractRoleChecker extends CallInterceptor {
   constructor(source, permissionsScheme) {
     super(source);
     this.permissionsScheme = permissionsScheme;
@@ -55,4 +55,4 @@ class RoleChecker extends CallInterceptor {
   }
 }
 
-module.exports = RoleChecker;
+module.exports = AbstractRoleChecker;
