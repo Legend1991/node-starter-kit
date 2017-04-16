@@ -5,3 +5,5 @@
 [![License: MIT](https://img.shields.io/badge/License-MIT-brightgreen.svg)](https://opensource.org/licenses/MIT)
 
 Starter kit for developing Node.js applications
+
+![Application Architecture Scheme](https://github.com/Legend1991/node-starter-kit/doc/application-architecture-scheme.png)
