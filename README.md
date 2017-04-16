@@ -6,4 +6,4 @@
 
 Starter kit for developing Node.js applications
 
-![Application Architecture Scheme](https://github.com/Legend1991/node-starter-kit/doc/application-architecture-scheme.png)
+![Application Architecture Scheme](https://github.com/Legend1991/node-starter-kit/raw/master/doc/application-architecture-scheme.png)
