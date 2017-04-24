@@ -10,7 +10,13 @@ class RequestHandler extends CallInterceptor {
   }
 
   async before(methodName, req, res, next) {
+    let args = [];
 
+    args = args.concat(Object.values(req.params));
+    args = args.concat(Object.values(req.query));
+    args.push(req.body);
+
+    return args;
   }
 
   async after(methodName, targetResult, req, res, next, ...args) {
