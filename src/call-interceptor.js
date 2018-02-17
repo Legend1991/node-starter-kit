@@ -51,11 +51,7 @@ class CallInterceptor {
      *  We want to get the true source type name if CallInterceptors
      *  are included in each other
      */
-    if (this._hasGetter(this._source, 'sourceTypeName')) {
-      return this._source.sourceTypeName
-    }
-
-    return this._source.constructor.name
+    return this._source.sourceTypeName ? this._source.sourceTypeName : this._source.constructor.name
   }
 
   _hasGetter (target, property) {
