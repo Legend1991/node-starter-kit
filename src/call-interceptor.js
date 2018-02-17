@@ -7,7 +7,7 @@ class CallInterceptor {
 
     return new Proxy(source, {
       get: (target, property, receiver) => {
-        return self._hasGetter(self, property)
+        return self[property]
           ? self[property]
           : self._get(target, property, receiver)
       }
@@ -51,7 +51,9 @@ class CallInterceptor {
      *  We want to get the true source type name if CallInterceptors
      *  are included in each other
      */
-    return this._source.sourceTypeName ? this._source.sourceTypeName : this._source.constructor.name
+    return this._source.sourceTypeName
+      ? this._source.sourceTypeName
+      : this._source.constructor.name
   }
 
   _hasGetter (target, property) {

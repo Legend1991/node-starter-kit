@@ -15,10 +15,10 @@ class CallInterceptorTest {
 
   _checkSourceGetter () {
     it('Getting true source', async () => {
-      let id = Date.now()
-      let ci = new this._Type({id})
+      const ID = Date.now()
+      let ci = new this._Type({id: ID})
 
-      assert.equal(ci.source.id, id, 'It is expected that the source from CallInterceptor object match the source passed to CallInterceptor constructor')
+      assert.equal(ci.source.id, ID, 'It is expected that the source from CallInterceptor object match the source passed to CallInterceptor constructor')
     })
   }
 
