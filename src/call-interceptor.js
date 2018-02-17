@@ -6,30 +6,39 @@ class CallInterceptor {
     this._source = source
 
     return new Proxy(source, {
-      get: async (target, property, receiver) => {
-        if (typeof target[property] === 'function') {
-          return async (...args) => {
-            let newArgs = await self.before.apply(self, [property].concat(args))
-            let afterArgs = (Array.isArray(newArgs) && args.concat[newArgs]) || args
-            args = (Array.isArray(newArgs) && newArgs) || args
-
-            typeof self[property] === 'function' && await async () => self[property].apply(self, args)
-            let targetResult = await async () => target[property].apply(target, args)
-
-            return (await self.after.apply(self, [property, targetResult].concat(afterArgs))) && targetResult
-          }
-        }
-
-        return target[property]
+      get: (target, property, receiver) => {
+        return self._hasGetter(self, property)
+          ? self[property]
+          : self._get(target, property, receiver)
       }
     })
   }
 
-  async before (methodName, ...args) {
+  async _get (target, property, receiver) {
+    if (typeof target[property] === 'function') {
+      return async (...args) => {
+        let newArgs = await this._before.apply(this, [property].concat(args))
+        let afterArgs = (Array.isArray(newArgs) && args.concat[newArgs]) || args
+        args = (Array.isArray(newArgs) && newArgs) || args
+
+        if (typeof this[property] === 'function') {
+          await (async () => this[property].apply(this, args))()
+        }
+
+        let targetResult = await (async () => target[property].apply(target, args))()
+
+        return (await this._after.apply(this, [property, targetResult].concat(afterArgs))) && targetResult
+      }
+    }
+
+    return target[property]
+  }
+
+  async _before (methodName, ...args) {
 
   }
 
-  async after (methodName, targetResult, ...args) {
+  async _after (methodName, targetResult, ...args) {
 
   }
 
@@ -37,12 +46,23 @@ class CallInterceptor {
     return this._source
   }
 
-  getSourceType () {
-    if (typeof this._source['getSourceType'] === 'function') {
-      return this._source.getSourceType()
+  get sourceTypeName () {
+    /*
+     *  We want to get the true source type name if CallInterceptors
+     *  are included in each other
+     */
+    if (this._hasGetter(this._source, 'sourceTypeName')) {
+      return this._source.sourceTypeName
     }
 
     return this._source.constructor.name
+  }
+
+  _hasGetter (target, property) {
+    let targetProto = Object.getPrototypeOf(target)
+    let propDesc = Object.getOwnPropertyDescriptor(targetProto, property)
+
+    return !!(propDesc && propDesc['get'])
   }
 }
 

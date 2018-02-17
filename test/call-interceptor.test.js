@@ -1,6 +1,5 @@
 const assert = require('assert')
 const {describe, it} = require('mocha')
-const CallInterceptor = require('../src/call-interceptor')
 
 class CallInterceptorTest {
   constructor (Type) {
@@ -9,22 +8,27 @@ class CallInterceptorTest {
 
   run () {
     describe('CallInterceptor', () => {
-      this._checkGetSourceType()
+      this._checkSourceGetter()
+      this._checkSourceTypeNameGetter()
     })
   }
 
-  _checkGetSourceType () {
-    it('Getting right source type', () => {
+  _checkSourceGetter () {
+    it('Getting true source', async () => {
+      let id = Date.now()
+      let ci = new this._Type({id})
+
+      assert.equal(ci.source.id, id, 'It is expected that the source from CallInterceptor object match the source passed to CallInterceptor constructor')
+    })
+  }
+
+  _checkSourceTypeNameGetter () {
+    it('Getting true source type name', async () => {
       let ci = new this._Type(new Array(0))
 
-      assert.equal(ci.getSourceType(), 'Array', 'It is expected that the source type from CallInterceptor match the source type passed to CallInterceptor constructor')
+      assert.equal(ci.sourceTypeName, 'Array', 'It is expected that the source type name from CallInterceptor object match the source type name passed to CallInterceptor constructor')
     })
   }
 }
-
-let callInterceptorTest = new CallInterceptorTest(CallInterceptor)
-callInterceptorTest.run()
-
-console.log('adf')
 
 module.exports = CallInterceptorTest
